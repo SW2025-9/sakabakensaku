@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resouces :users
+  get "items/index"
+  get "items/new"
+  get "items/show"
+  get "items/create"
+  get "items/destroy"
+  resources :users
   root 'users#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

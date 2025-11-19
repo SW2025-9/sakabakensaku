@@ -1,0 +1,13 @@
+<%= form_with model: @item do |f| %>
+  <%= f.label :name, '商品名' %>
+  <%= f.nameld :name %>
+  <%= f.label :liter, '内容量' %>
+  <%= f.text_field :liter %>
+  <%= f.label :price, '値段' %>
+  <%= f.text_field :price %>
+  <%= f.label :category, '種類（日本酒、ウイスキー、リキュール等）' %>
+  <%= f.text_field :category %>
+  <%= f.label :detail, '詳細' %>
+  <%= f.text_field :detail %>
+  <%= f.submit '更新' %>
+<% end %>

@@ -9,8 +9,8 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(uid: params[:user][:uid],
-                    password:params[:user][:password],
-                    password_confirmation:params[:user][:password_confirmation])
+                    password: params[:user][:password],
+                    city: params[:user][:city])
     user.save
     redirect_to users_path
   end
