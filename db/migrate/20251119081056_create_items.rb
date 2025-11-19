@@ -4,7 +4,7 @@ class CreateItems < ActiveRecord::Migration[8.0]
       t.string :name
       t.integer :liter
       t.integer :price
-      t.category :string
+      t.string :category
       t.string :detail
 
       t.timestamps
