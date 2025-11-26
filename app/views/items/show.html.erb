@@ -1,11 +1,26 @@
-<h2><%= @item.name %></h2>
+<p>
+  <strong>商品名：</strong>
+  <%= @items.name %>
+</p>
 
-<% if @item.image.attached? %>
-  <%= image_tag @item.image, style: "max-width: 300px;" %>
-<% else %>
-  <p>画像がありません</p>
-<% end %>
+<p>
+  <strong>内容量：</strong>
+  <%= @items.liter %>
+</p>
 
-<p>価格：<%= @item.price %>円</p>
-<p>カテゴリー：<%= @item.category %></p>
-<p>説明：<%= @item.detail %></p>
+<p>
+  <strong>値段：</strong>
+  <%= @items.price %>
+</p>
+
+<p>
+  <strong>種類：</strong>
+  <%= @items.category %>
+</p>
+
+<p>
+  <strong>詳細：</strong>
+  <%= @items.detail %>
+</p>
+
+<%= link_to 'Back', '/' %>

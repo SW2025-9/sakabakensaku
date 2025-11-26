@@ -1,25 +1,26 @@
 class ItemsController < ApplicationController
-
-  def new
-    @item = Item.new
+  def index
+    @items = Item.all
   end
 
-  def create
-    @item = Item.new(item_params)
-    if @item.save
-      redirect_to @item
-    else
-      render :new
-    end
+  def new
+    @items = Item.new
   end
 
   def show
-    @item = Item.find(params[:id])
+    @items = Item.find(params[:id])
   end
 
-  private
+  def create
+    item = Item.new(name: params[:item][:name],
+                    liter: params[:item][:liter],
+                    price: params[:item][:price],
+                    category: params[:item][:category],
+                    detail: params[:item][:detail])
+    item.save
+    redirect_to items_path
+  end
 
-  def item_params
-    params.require(:item).permit(:name, :liter, :price, :category, :detail, :shop_id, :image)
+  def destroy
   end
 end

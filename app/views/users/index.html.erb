@@ -1,0 +1,10 @@
+<% @users.each do |f| %>
+  <p>
+      uid: <%= f.uid %>, 
+      password: <%=f.password %>
+      city: <%=f.city %>
+      <%= link_to '削除', user_path(f), data: {turbo_method: :delete} %>
+      <%= link_to '表示', user_path(f) %>
+  </p>
+<% end %>
+<p><%= link_to '新規追加', new_user_path %></p>
