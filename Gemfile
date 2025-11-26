@@ -63,4 +63,4 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem 'rails-i18n'
+gem 'rails-i18n'画像登録機能追加
