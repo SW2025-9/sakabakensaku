@@ -1,0 +1,17 @@
+<% @shops.each do |f| %>
+    <div class="item-box">
+    <% if f.image.attached? %>
+      <%= image_tag f.image, width: 100 %>
+    <% else %>
+      <%# 画像がない場合に「No Image」画像などを出すことも可能 %>
+      <p>（画像なし）</p>
+    <% end %>
+  <p>
+      name: <%= f.name %>, 
+      city: <%=f.city %>
+      detail: <%=f.detail %>
+      <%= link_to '表示', shop_path(f) %>
+      <%= link_to '編集', edit_shop_path(f) %>
+  </p>
+<% end %>
+<p><%= link_to '新規追加', new_shop_path %></p>

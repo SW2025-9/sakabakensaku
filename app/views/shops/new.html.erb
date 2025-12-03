@@ -1,0 +1,11 @@
+<%= form_with model: @shop do |f| %>
+  <%= f.label :name, '店舗名' %>
+  <%= f.text_field :name %>
+  <%= f.label :image, '画像' %>
+　<%= f.file_field :image %>
+  <%= f.label :city, '所在地' %>
+  <%= f.text_field :city %>
+  <%= f.label :detail, '詳細' %>
+  <%= f.text_field :detail %>
+  <%= f.submit '登録' %>
+<% end %>

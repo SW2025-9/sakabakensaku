@@ -5,7 +5,6 @@
       price: <%=f.price %>
       category: <%=f.category %>
       detail: <%=f.detail %>
-      <%= link_to '削除', item_path(f), data: {turbo_method: :delete} %>
       <%= link_to '表示', item_path(f) %>
       <%= link_to '編集', edit_item_path(f) %>
   </p>

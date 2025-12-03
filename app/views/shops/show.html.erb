@@ -1,0 +1,23 @@
+<p>
+  <strong>店舗名：</strong>
+  <%= @shop.name %>
+</p>
+
+<% if @shop.image.attached? %>
+  <div class="image">
+    <%# widthオプションで表示サイズを指定（単位はpx） %>
+    <%= image_tag @shop.image, width: 300 %>
+  </div>
+<% end %>
+
+<p>
+  <strong>所在地：</strong>
+  <%= @shop.city %>
+</p>
+
+<p>
+  <strong>詳細：</strong>
+  <%= @shop.detail %>
+</p>
+
+<%= link_to 'Back', '/' %>
