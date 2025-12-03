@@ -4,11 +4,11 @@ class ItemsController < ApplicationController
   end
 
   def new
-    @items = Item.new
+    @item = Item.new
   end
 
   def show
-    @items = Item.find(params[:id])
+    @item = Item.find(params[:id])
   end
 
   def create
@@ -20,7 +20,21 @@ class ItemsController < ApplicationController
     item.save
     redirect_to items_path
   end
+  
+  def edit
+    @item = Item.find(params[:id])
+  end
 
   def destroy
+  end
+  
+  def update
+    item = Item.find(params[:id])
+    item.update(name: params[:item][:name],
+                    liter: params[:item][:liter],
+                    price: params[:item][:price],
+                    category: params[:item][:category],
+                    detail: params[:item][:detail])
+    redirect_to items_path
   end
 end
