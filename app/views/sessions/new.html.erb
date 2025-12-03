@@ -30,6 +30,7 @@
 
   .form-submit {
     text-align: center;
+    margin-top: 20px;
   }
 
   .submit-btn {
@@ -43,28 +44,29 @@
 </style>
 
 <div class="form-container">
-  <h2>新規登録</h2>
+  <h2>ログイン</h2>
 
-  <%= form_with model: @users, class: "custom-form" do |f| %>
+  <%= form_with url: '/login', scope: :session, class: "custom-form", local: true do |f| %>
 
     <div class="form-group">
-      <%= f.label :uid, 'ユーザ名', class: "form-label" %>
-      <%= f.text_field :uid, class: "form-input" %>
+      <label class="form-label">ユーザ名</label>
+      <%= f.text_field :uid, class: "form-input", autocomplete: "username", autofocus: true %>
     </div>
 
     <div class="form-group">
-      <%= f.label :password, 'パスワード', class: "form-label" %>
-      <%= f.password_field :password, class: "form-input" %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :city, '所在地（市区町村まで）', class: "form-label" %>
-      <%= f.text_field :city, class: "form-input" %>
+      <label class="form-label">パスワード</label>
+      <%= f.password_field :password, class: "form-input", autocomplete: "current-password" %>
     </div>
 
     <div class="form-submit">
-      <%= f.submit '登録', class: "submit-btn" %>
+      <%= f.submit "ログイン", class: "submit-btn" %>
     </div>
+
+    <% if flash[:alert] %>
+      <p style="color:#b00; text-align:center; margin-top:10px;">
+        <%= flash[:alert] %>
+      </p>
+    <% end %>
 
   <% end %>
 </div>

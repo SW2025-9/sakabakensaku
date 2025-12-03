@@ -1,0 +1,19 @@
+<header style="padding:12px 20px; border-bottom:1px solid #eee; display:flex; align-items:center; justify-content:space-between;">
+  
+  <!-- 酒場検索をTOPへのリンクにする -->
+  <a href="<%= root_path %>" style="font-size:22px; font-weight:600; text-decoration:none; color:#333;">
+    酒場検索
+  </a>
+
+  <div style="display:flex; gap:16px; align-items:center;">
+    <% if logged_in? %>
+      <a href="<%= new_shop_path %>" style="text-decoration:none; color:#333;">酒屋の登録</a>
+      <span style="color:#333;">ようこそ <%= current_user.uid %></span>
+      <%= button_to "ログアウト", logout_path, method: :delete, form: { style: "display:inline" }, class: "nav-btn" %>
+    <% else %>
+      <a href="<%= new_user_path %>" style="text-decoration:none; color:#333;">新規登録</a>
+      <a href="<%= login_path %>" style="text-decoration:none; color:#333;">ログイン</a>
+    <% end %>
+  </div>
+
+</header>

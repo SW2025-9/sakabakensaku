@@ -1,13 +1,19 @@
-<% @items.each do |f| %>
-  <p>
-      name: <%= f.name %>, 
-      liter: <%=f.liter %>
-      price: <%=f.price %>
-      category: <%=f.category %>
-      detail: <%=f.detail %>
-      <%= link_to '削除', item_path(f), data: {turbo_method: :delete} %>
-      <%= link_to '表示', item_path(f) %>
-      <%= link_to '編集', crete_item_path %>
-  </p>
-<% end %>
-<p><%= link_to '新規追加', new_item_path %></p>
+<div style="width:920px; margin: 18px auto; font-family: sans-serif;">
+
+  <!-- 検索領域 -->
+  <div style="display:flex; gap:8px; align-items:center; margin-bottom:18px;">
+    <input type="text" placeholder="" style="flex:1; height:28px; border:1px solid #bbb; padding:6px 8px;">
+    <select style="width:80px; height:32px; border:1px solid #bbb;">
+      <option>選択</option>
+    </select>
+    <button style="padding:6px 10px; border:1px solid #bbb; background:#fff;">検索</button>
+  </div>
+
+  <!-- 一覧 -->
+  <div style="display:flex; flex-direction:column; gap:28px;">
+    <% @items.each do |item| %>
+      <%= render partial: 'item', locals: { item: item } %>
+    <% end %>
+  </div>
+
+</div>

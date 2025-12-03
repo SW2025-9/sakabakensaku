@@ -1,6 +1,5 @@
 class Shop < ApplicationRecord
-  has_one_attached :image
-  has_many :items
-  has_many :reviews
-  has_many :likes
+  belongs_to :user, optional: true   # マイグレーションで user_id を必須にするなら optional: false に
+  has_one_attached :image  # ActiveStorage を使うなら
+  validates :name, presence: true
 end
