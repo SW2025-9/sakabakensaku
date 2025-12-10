@@ -1,0 +1,28 @@
+<div style="display:flex; gap:18px; align-items:flex-start;">
+  <!-- 左: サムネ（固定比率の箱） -->
+  <div style="width:360px; height:160px; background:#eee; display:flex; align-items:center; justify-content:center; border:1px solid #ddd;">
+    <% if item.image.attached? rescue false %>
+      <%= image_tag item.image.variant(resize_to_limit: [350, 150]) %>
+    <% else %>
+      <span style="color:#999;">画像</span>
+    <% end %>
+  </div>
+
+  <!-- 右: 酒屋名・いいねボタン -->
+  <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <strong style="background:#fff; border:1px solid #bbb; padding:6px 10px; border-radius:3px;"><%= item.shop&.name || "酒屋の名前" %></strong>
+      <!-- いいねボタン：簡易（ここは likes#create にポストする想定） -->
+      <%= form_with url: '#', method: :post, local: true do |f| %>
+        <%= f.submit "いいね 👍", style: "border:1px solid #bbb; padding:8px 10px; background:#fff;" %>
+      <% end %>
+    </div>
+
+    <!-- レビュー風の幅広表示 -->
+    <div style="width:100%; border:1px solid #ddd; padding:12px; box-sizing:border-box; background:#fff;">
+      <div style="color:#555; min-height:36px;">
+        <%= truncate(item.detail.to_s, length: 200) %>
+      </div>
+    </div>
+  </div>
+</div>

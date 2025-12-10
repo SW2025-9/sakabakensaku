@@ -5,7 +5,8 @@ class CreateItems < ActiveRecord::Migration[8.0]
       t.integer :liter
       t.integer :price
       t.string :category
-      t.string :detail
+      t.text :detail
+      t.references :shop, null: false, foreign_key: true
 
       t.timestamps
     end

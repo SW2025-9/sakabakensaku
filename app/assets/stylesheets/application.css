@@ -8,3 +8,5 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+/* app/assets/stylesheets/application.css */
+.nav-btn { border:none; background:#fff; padding:6px 10px; }
