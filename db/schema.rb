@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_03_081210) do
-ActiveRecord::Schema[8.0].define(version: 2025_12_03_082615) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_10_075252) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -52,14 +51,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_082615) do
     t.index ["shop_id"], name: "index_items_on_shop_id"
   end
 
-  create_table "shops", force: :cascade do |t|
-    t.string "name"
-    t.string "city"
-    t.text "detail"
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "shop_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
-    t.index ["user_id"], name: "index_shops_on_user_id"
+    t.index ["shop_id"], name: "index_likes_on_shop_id"
+    t.index ["user_id", "shop_id"], name: "index_likes_on_user_id_and_shop_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "shops", force: :cascade do |t|
@@ -69,6 +68,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_082615) do
     t.string "detail"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_shops_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -82,9 +83,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_082615) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-<<<<<<< HEAD
-=======
   add_foreign_key "items", "shops"
+  add_foreign_key "likes", "shops"
+  add_foreign_key "likes", "users"
   add_foreign_key "shops", "users"
->>>>>>> 879cdd208bdcf71eafec069bcbe9af0639dbb033
 end

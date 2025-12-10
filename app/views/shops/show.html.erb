@@ -20,4 +20,14 @@
   <%= @shop.detail %>
 </p>
 
+<% if current_user.already_liked?(@shop) %>
+  <%# いいね解除ボタン %>
+  <%= button_to 'いいねを取り消す', shop_likes_path(@shop), method: :delete %>
+<% else %>
+  <%# いいね登録ボタン %>
+  <%= button_to 'いいね', shop_likes_path(@shop), method: :post %>
+<% end %>
+
+<%# いいね数の表示 %>
+<p>いいね数: <%= @shop.likes.count %></p>
 <%= link_to 'Back', '/' %>

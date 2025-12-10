@@ -1,44 +1,21 @@
 class ShopsController < ApplicationController
-  def index
-    @shops = Shop.all
-  end
 
-  def new
-    @shop = Shop.new
   before_action :require_login
 
   def index
     @shops = Shop.order(created_at: :desc).limit(20)
   end
 
+  def new
+    @shop = Shop.new
+  end
+    
   def show
     @shop = Shop.find(params[:id])
   end
 
-  def create
-    @shop = Shop.new(shop_params)
-    @shop.save
-    redirect_to shops_path
-  end
-
   def edit
     @shop = Shop.find(params[:id])
-  end
-  
-  def update
-    shop = Shop.find(params[:id])
-    shop = shop.update(shop_params)
-    redirect_to shops_path
-  end
-  
-  private
-  
-  def shop_params
-    # :image を追加してください
-    params.require(:shop).permit(:name, :image, :city, :detail)
-
-  def new
-    @shop = Shop.new
   end
 
   def create
@@ -51,10 +28,24 @@ class ShopsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
-  private
-
-  def shop_params
-    params.require(:shop).permit(:name, :description, :address, :image) # 項目はモデルに合わせて増やす
+  
+  def destroy
+    shop = Shop.find(params[:id])
+    shop.destroy
+    redirect_to shops_path
   end
+
+  def update
+    @shop = Shop.find(params[:id])
+    shop = @shop.update(shop_params)
+    redirect_to shop_path
+  end
+  
+  
+  private
+  
+  def shop_params
+    params.require(:shop).permit(:name, :detail, :city, :image)
+  end
+  
 end

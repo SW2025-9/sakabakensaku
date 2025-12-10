@@ -3,13 +3,13 @@
     <% if f.image.attached? %>
       <%= image_tag f.image, width: 100 %>
     <% else %>
-      <%# 画像がない場合に「No Image」画像などを出すことも可能 %>
       <p>（画像なし）</p>
     <% end %>
   <p>
       name: <%= f.name %>, 
       city: <%=f.city %>
       detail: <%=f.detail %>
+      <%= link_to '削除', shop_path(f), data: {turbo_method: :delete} %>
       <%= link_to '表示', shop_path(f) %>
       <%= link_to '編集', edit_shop_path(f) %>
   </p>
