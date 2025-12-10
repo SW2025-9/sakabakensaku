@@ -1,4 +1,5 @@
 class ShopsController < ApplicationController
+<<<<<<< Updated upstream
   def index
     @shops = Shop.all
   end
@@ -6,6 +7,9 @@ class ShopsController < ApplicationController
   def new
     @shop = Shop.new
   before_action :require_login
+=======
+  before_action :require_login  # ログイン必須にしたい場合
+>>>>>>> Stashed changes
 
   def index
     @shops = Shop.order(created_at: :desc).limit(20)
@@ -42,9 +46,14 @@ class ShopsController < ApplicationController
   end
 
   def create
-    # 現在のユーザに紐づけて作る（user_id カラムが必要）
-    @shop = current_user.shops.build(shop_params)
+    @shop = current_user ? current_user.shops.build(shop_params) : Shop.new(shop_params)
+
     if @shop.save
+      # 画像ファイルが来ていたら attach（ActiveStorage）
+      if params[:shop] && params[:shop][:image].present?
+        @shop.image.attach(params[:shop][:image])
+      end
+
       redirect_to root_path, notice: "酒場を登録しました"
     else
       flash.now[:alert] = "登録に失敗しました"
@@ -55,6 +64,6 @@ class ShopsController < ApplicationController
   private
 
   def shop_params
-    params.require(:shop).permit(:name, :description, :address, :image) # 項目はモデルに合わせて増やす
+    params.require(:shop).permit(:name, :address, :description)
   end
 end
