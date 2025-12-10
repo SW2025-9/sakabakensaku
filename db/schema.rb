@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[8.0].define(version: 2025_12_10_075252) do
+=======
+<<<<<<< Updated upstream
+ActiveRecord::Schema[8.0].define(version: 2025_12_03_081210) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_03_082615) do
+=======
+ActiveRecord::Schema[8.0].define(version: 2025_12_10_063821) do
+>>>>>>> Stashed changes
+>>>>>>> 051f4cc3ff6f8f5e2dfb41fad38872eea5eecdf6
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -56,9 +65,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_10_075252) do
     t.integer "shop_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.index ["shop_id"], name: "index_likes_on_shop_id"
     t.index ["user_id", "shop_id"], name: "index_likes_on_user_id_and_shop_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+=======
+    t.integer "user_id", null: false
+    t.string "address"
+    t.index ["user_id"], name: "index_shops_on_user_id"
+>>>>>>> 051f4cc3ff6f8f5e2dfb41fad38872eea5eecdf6
   end
 
   create_table "shops", force: :cascade do |t|
