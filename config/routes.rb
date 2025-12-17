@@ -12,9 +12,11 @@ Rails.application.routes.draw do
 
 
   resources :users
-  root 'shops#index'
+  root 'items#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :items, only: [:index, :show, :new]
+  resources :items, only: [:index, :show, :new, :create, :destroy, :edit, :update] do
+    resources :reviews, only: [:create]
+  end
   resources :shops do
     resource :likes, only: [:create, :destroy]
     resources :reviews, only: [:create]

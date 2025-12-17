@@ -1,7 +1,7 @@
 <div style="display:flex; gap:18px; align-items:flex-start;">
   <!-- 左: サムネ（固定比率の箱） -->
   <div style="width:360px; height:160px; background:#eee; display:flex; align-items:center; justify-content:center; border:1px solid #ddd;">
-    <% if item.image.attached? rescue false %>
+    <% if item.image.attached? %>
       <%= image_tag item.image.variant(resize_to_limit: [350, 150]) %>
     <% else %>
       <span style="color:#999;">画像</span>

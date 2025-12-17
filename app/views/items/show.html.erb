@@ -1,26 +1,63 @@
-<p>
-  <strong>商品名：</strong>
-  <%= @item.name %>
-</p>
+<div class="shop-show-container">
+  
+  <%# --- 商品情報エリア --- %>
+  <div class="shop-detail-header">
+    <h1 class="shop-title"><%= @item.name %></h1>
+    <p>価格: <%= @item.price %>円 / 容量: <%= @item.liter %>ml</p>
+    <p>カテゴリー: <%= @item.category %> / 詳細: <%= @item.detail %></p>
+    
+    <% if @item.image.attached? %>
+      <div class="shop-main-image">
+        <%= image_tag @item.image %>
+      </div>
+    <% end %>
+    
+    <div style="margin-top: 10px;">
+      <%= link_to "一覧に戻る", items_path, class: "back-link" %>
+    </div>
+  </div>
 
-<p>
-  <strong>内容量：</strong>
-  <%= @item.liter %>
-</p>
+  <hr class="divider">
 
-<p>
-  <strong>値段：</strong>
-  <%= @item.price %>
-</p>
+  <%# --- レビュー投稿フォーム --- %>
+  <div class="review-form-area">
+    <h3>レビューを投稿する</h3>
+    
+    <% if session[:user_id] %>
+      <%# item_reviews_path に自動的になります %>
+      <%= form_with(model: [@item, @review], local: true, class: "review-form") do |f| %>
+        
+        <div class="form-group">
+          <label>コメント</label>
+          <%= f.text_area :content, rows: 3, placeholder: "商品の感想を書きましょう", class: "review-textarea" %>
+        </div>
 
-<p>
-  <strong>種類：</strong>
-  <%= @item.category %>
-</p>
+        <%= f.submit "投稿する", class: "submit-review-btn" %>
+      <% end %>
+    <% else %>
+      <p style="color: #666;">レビューを投稿するには <%= link_to "ログイン", login_path %> してください。</p>
+    <% end %>
+  </div>
 
-<p>
-  <strong>詳細：</strong>
-  <%= @item.detail %>
-</p>
+  <hr class="divider">
 
-<%= link_to 'Back', '/' %>
+  <div class="reviews-list">
+    <h3>みんなのレビュー (<%= @reviews.count %>件)</h3>
+
+    <% if @reviews.any? %>
+      <% @reviews.each do |review| %>
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-user"><%= review.user.uid %> さん</span>
+            <span class="review-date"><%= review.created_at.strftime('%Y/%m/%d') %></span>
+          </div>
+          <div class="review-body">
+            <%= simple_format(review.content) %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>まだレビューはありません。</p>
+    <% end %>
+  </div>
+</div>

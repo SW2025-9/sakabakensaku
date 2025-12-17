@@ -4,6 +4,7 @@ class Item < ApplicationRecord
   belongs_to :shop, optional: true   
   has_many :reviews, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   validates :name, presence: true
 end

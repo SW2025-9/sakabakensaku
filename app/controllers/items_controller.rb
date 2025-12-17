@@ -9,15 +9,13 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find(params[:id])
+    @review = Review.new
+    @reviews = @item.reviews.includes(:user).order(created_at: :desc)
   end
 
   def create
-    item = Item.new(name: params[:item][:name],
-                    liter: params[:item][:liter],
-                    price: params[:item][:price],
-                    category: params[:item][:category],
-                    detail: params[:item][:detail])
-    item.save
+    @item = Item.new(item_params)
+    @item.save
     redirect_to items_path
   end
   
@@ -26,18 +24,25 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    # 表示用のレコードを用意。実プロジェクトに合わせて scope を調整。
-    # ここでは最新の10件を持ってくる例:
-    @items = Item.order(created_at: :desc).limit(10)
+    @item = Item.find(params[:id])
+    
+    @item.destroy
+    
+    respond_to do |format|
+      format.html { redirect_to items_path, notice: "商品を削除しました" }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@item) }
+    end
   end
   
   def update
-    item = Item.find(params[:id])
-    item.update(name: params[:item][:name],
-                    liter: params[:item][:liter],
-                    price: params[:item][:price],
-                    category: params[:item][:category],
-                    detail: params[:item][:detail])
-    redirect_to items_path
+    @item = Item.find(params[:id])
+    @item.update(item_params)
+    redirect_to items_path, notice: "商品を更新しました"
+  end
+  
+  private
+
+  def item_params
+    params.require(:item).permit(:name, :price, :category, :detail, :liter, :image, :shop_id)
   end
 end
