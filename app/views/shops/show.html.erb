@@ -30,4 +30,57 @@
 
 <%# いいね数の表示 %>
 <p>いいね数: <%= @shop.likes.count %></p>
-<%= link_to 'Back', '/' %>
+
+<div class="shop-show-container">
+  
+  <%# --- お店情報エリア --- %>
+  <div class="shop-detail-header">
+    
+    <div style="margin-top: 10px;">
+      <%= link_to "一覧に戻る", root_path, class: "back-link" %>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <%# --- レビュー投稿フォーム（コメントのみ） --- %>
+  <div class="review-form-area">
+    <h3>レビューを投稿する</h3>
+    
+    <% if session[:user_id] %>
+      <%= form_with(model: [@shop, @review], local: true, class: "review-form") do |f| %>
+        
+        <div class="form-group">
+          <label>コメント</label>
+          <%= f.text_area :content, rows: 3, placeholder: "お店の感想を書きましょう", class: "review-textarea" %>
+        </div>
+
+        <%= f.submit "投稿する", class: "submit-review-btn" %>
+      <% end %>
+    <% else %>
+      <p style="color: #666;">レビューを投稿するには <%= link_to "ログイン", login_path %> してください。</p>
+    <% end %>
+  </div>
+
+  <hr class="divider">
+
+  <div class="reviews-list">
+    <h3>みんなのレビュー (<%= @reviews.count %>件)</h3>
+
+    <% if @reviews.any? %>
+      <% @reviews.each do |review| %>
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-user"><%= review.user.uid %> さん</span>
+            <span class="review-date"><%= review.created_at.strftime('%Y/%m/%d') %></span>
+          </div>
+          <div class="review-body">
+            <%= simple_format(review.content) %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>まだレビューはありません。</p>
+    <% end %>
+  </div>
+</div>

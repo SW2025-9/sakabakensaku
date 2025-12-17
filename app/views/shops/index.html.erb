@@ -1,17 +1,82 @@
-<% @shops.each do |f| %>
-    <div class="item-box">
-    <% if f.image.attached? %>
-      <%= image_tag f.image, width: 100 %>
-    <% else %>
-      <p>（画像なし）</p>
+<div class="top-container">
+
+  <%# --- 検索エリア --- %>
+  <div class="search-area">
+    <%= form_with(url: root_path, method: :get, local: true, class: "search-form") do |f| %>
+      <%= f.text_field :search, value: params[:search], placeholder: "店名検索...", class: "search-input" %>
+      <%= f.select :category, [['エリア選択', '']], {}, class: "search-select" %>
+      <%= f.submit "検索", name: nil, class: "search-btn" %>
     <% end %>
-  <p>
-      name: <%= f.name %>, 
-      city: <%=f.city %>
-      detail: <%=f.detail %>
-      <%= link_to '削除', shop_path(f), data: {turbo_method: :delete} %>
-      <%= link_to '表示', shop_path(f) %>
-      <%= link_to '編集', edit_shop_path(f) %>
-  </p>
-<% end %>
-<p><%= link_to '新規追加', new_shop_path %></p>
+  </div>
+
+  <%# --- 一覧表示エリア --- %>
+  <div class="shop-list">
+    <% @shops.each do |shop| %>
+      <div class="shop-card">
+        <div class="shop-content">
+          
+          <%# 左側：画像 %>
+          <div class="shop-image">
+            <% if shop.image.attached? %>
+              <%= image_tag shop.image, class: "shop-img-tag" %>
+            <% else %>
+              <div class="no-image-text">No Image</div>
+            <% end %>
+          </div>
+
+          <%# 右側：情報 %>
+          <div class="shop-info">
+            <div class="shop-name-box">
+              <%= shop.name %>
+            </div>
+            
+            <% if session[:user_id] %>
+              <div class="shop-edit-area">
+                <%= link_to '編集する', edit_shop_path(shop), class: "edit-btn" %>
+              </div>
+            <% end %>
+            
+            <div class="shop-like-area">
+              <% if session[:user_id] %>
+                <%# --- ログイン中（機能あり） --- %>
+                <% if shop.likes.exists?(user_id: session[:user_id]) %>
+                  <%# 解除ボタン %>
+                  <%= button_to shop_likes_path(shop), method: :delete, class: "like-btn liked" do %>
+                    解除 <span class="thumbs-up">👍</span>
+                    <span class="like-count"><%= shop.likes.count %></span>
+                  <% end %>
+                <% else %>
+                  <%# 登録ボタン %>
+                  <%= button_to shop_likes_path(shop), method: :post, class: "like-btn" do %>
+                    いいね <span class="thumbs-up">👍</span>
+                    <span class="like-count"><%= shop.likes.count %></span>
+                  <% end %>
+                <% end %>
+
+              <% else %>
+                <%# --- ログアウト中（機能なし・飾りボタン） --- %>
+                <button type="button" class="like-btn">
+                  いいね <span class="thumbs-up">👍</span>
+                  <span class="like-count"><%= shop.likes.count %></span>
+                </button>
+              <% end %>
+            </div>
+            
+          </div>
+        </div>
+
+        <%# 下部：レビュー %>
+        <div class="shop-review-bar">
+          <%= link_to "レビュー", shop_path(shop), class: "review-link" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# 新規追加 %>
+  <% if session[:user_id] %>
+    <div class="bottom-action">
+      <%= link_to '新規追加', new_shop_path, class: "new-shop-link" %>
+    </div>
+  <% end %>
+</div>
