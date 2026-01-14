@@ -1,7 +1,13 @@
 class ItemsController < ApplicationController
   def index
+  # もしURLに shop_id があれば、その店の商品だけを表示する
+  if params[:shop_id]
+    @shop = Shop.find(params[:shop_id])
+    @items = @shop.items
+  else
     @items = Item.all
   end
+end
 
   def new
     @item = Item.new

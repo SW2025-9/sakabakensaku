@@ -27,8 +27,9 @@
           <%# 右側：情報 %>
           <div class="shop-info">
             <div class="shop-name-box">
-              <%= shop.name %>
-            </div>
+            <%# items_path（商品一覧）へ、shop_id（どの店のボタンか）を持って移動する %>
+            <%= link_to shop.name, items_path(shop_id: shop.id), class: "shop-name-link" %>
+          </div>
             
             <% if session[:user_id] %>
               <div class="shop-edit-area">

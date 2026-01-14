@@ -8,4 +8,6 @@ class Shop < ApplicationRecord
     validates :name, presence: true
     
     has_many :reviews, dependent: :destroy
+    
+    has_many :items, dependent: :destroy
 end
