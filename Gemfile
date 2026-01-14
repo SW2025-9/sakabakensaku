@@ -4,6 +4,19 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
+group :development, :test do
+  gem "sqlite3", ">= 2.1"
+  
+  # 下の方にあった debug や brakeman もここにまとまっています
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "brakeman", require: false
+  gem "rubocop-rails-omakase", require: false
+end
+
+# 本番環境（Render）では PostgreSQL を使う
+group :production do
+  gem "pg"
+end
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
