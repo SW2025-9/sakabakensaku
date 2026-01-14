@@ -1,15 +1,35 @@
 
 <p><%= link_to '新規追加', new_item_path %></p>
 
-<div style="width:920px; margin: 18px auto; font-family: sans-serif;">
+<div class="search-area" style="margin-bottom: 18px;">
+    <%= form_with url: items_path, method: :get, local: true, class: "search-form" do |f| %>
+      
+      <%# 店舗IDの維持 %>
+      <% if params[:shop_id].present? %>
+        <%= f.hidden_field :shop_id, value: params[:shop_id] %>
+      <% end %>
 
-  <!-- 検索領域 -->
-  <div style="display:flex; gap:8px; align-items:center; margin-bottom:18px;">
-    <input type="text" placeholder="" style="flex:1; height:28px; border:1px solid #bbb; padding:6px 8px;">
-    <select style="width:80px; height:32px; border:1px solid #bbb;">
-      <option>選択</option>
-    </select>
-    <button style="padding:6px 10px; border:1px solid #bbb; background:#fff;">検索</button>
+      <%# ① セレクトボックスを先に配置 %>
+      <%= f.select :target, 
+                   [
+                     ['名前', 'name'], 
+                     ['カテゴリー', 'category'], 
+                     ['価格', 'price'], 
+                     ['容量', 'volume']
+                   ], 
+                   { selected: params[:target] || 'name' }, 
+                   class: "search-select" %>
+
+      <%# ② テキストボックスを後に配置 %>
+      <%= f.text_field :keyword, 
+                       value: params[:keyword], 
+                       placeholder: "検索キーワード...", 
+                       class: "search-input" %>
+
+      <%# ③ 検索ボタン %>
+      <%= f.submit "検索", class: "search-btn" %>
+
+    <% end %>
   </div>
 
   <!-- 一覧 -->

@@ -5,9 +5,17 @@ class ShopsController < ApplicationController
     # 新着順で取得
     @shops = Shop.all.order(created_at: :desc)
 
-    # 検索パラメータがある場合の絞り込み
-    if params[:search].present?
-      @shops = @shops.where("name LIKE ?", "%#{params[:search]}%")
+    if params[:keyword].present?
+      # 検索用キーワードを準備（部分一致のために % で囲む）
+      search_term = "%#{params[:keyword]}%"
+
+      if params[:search_type] == 'area'
+        # エリア検索（addressカラムを検索すると仮定）
+        @shops = @shops.where('city LIKE ?', search_term)
+      else
+        # 店舗名検索（nameカラムを検索）
+        @shops = @shops.where('name LIKE ?', search_term)
+      end
     end
   end
 

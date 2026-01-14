@@ -3,9 +3,20 @@
   <%# --- 検索エリア --- %>
   <div class="search-area">
     <%= form_with(url: root_path, method: :get, local: true, class: "search-form") do |f| %>
-      <%= f.text_field :search, value: params[:search], placeholder: "店名検索...", class: "search-input" %>
-      <%= f.select :category, [['エリア選択', '']], {}, class: "search-select" %>
-      <%= f.submit "検索", name: nil, class: "search-btn" %>
+      
+      <%# ① セレクトボックス：何を検索するか選ぶ %>
+      <%= f.select :search_type, 
+                   [['店舗名検索', 'name'], ['エリア検索', 'area']], 
+                   { selected: params[:search_type] }, 
+                   class: "search-select" %>
+
+      <%# ② テキストボックス：キーワードを入力 %>
+      <%= f.text_field :keyword, 
+                       value: params[:keyword], 
+                       placeholder: "キーワードを入力...", 
+                       class: "search-input" %>
+
+      <%= f.submit "検索", class: "search-btn" %>
     <% end %>
   </div>
 
