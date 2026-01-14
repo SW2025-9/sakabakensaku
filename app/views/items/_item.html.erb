@@ -12,17 +12,36 @@
   <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
     <div style="display:flex; align-items:center; gap:8px;">
       <strong style="background:#fff; border:1px solid #bbb; padding:6px 10px; border-radius:3px;"><%= item.shop&.name || "酒屋の名前" %></strong>
-      <!-- いいねボタン：簡易（ここは likes#create にポストする想定） -->
-      <%= form_with url: '#', method: :post, local: true do |f| %>
-        <%= f.submit "いいね 👍", style: "border:1px solid #bbb; padding:8px 10px; background:#fff;" %>
-      <% end %>
+      <div style="display: inline-block;">
+        <% if current_user %>
+          <% if current_user.already_liked?(item) %>
+            <%= link_to item_likes_path(item), data: { turbo_method: :delete }, style: "text-decoration: none;" do %>
+              <button style="border:1px solid #bbb; padding:8px 10px; background:#ffebeb; cursor:pointer;">
+                いいね解除 ❤️ <%= item.likes.reload.count %>
+              </button>
+            <% end %>
+          <% else %>
+            <%= link_to item_likes_path(item), data: { turbo_method: :post }, style: "text-decoration: none;" do %>
+              <button style="border:1px solid #bbb; padding:8px 10px; background:#fff; cursor:pointer;">
+                いいね 👍 <%= item.likes.reload.count %>
+              </button>
+            <% end %>
+          <% end %>
+        <% else %>
+          <button style="border:1px solid #bbb; padding:8px 10px; background:#eee; color:#999;" disabled>
+            いいね 👍 <%= item.likes.reload.count %>
+          </button>
+        <% end %>
+      </div>
     </div>
 
     <!-- レビュー風の幅広表示 -->
     <div style="width:100%; border:1px solid #ddd; padding:12px; box-sizing:border-box; background:#fff;">
       <div style="color:#555; min-height:36px;">
-        <%= truncate(item.detail.to_s, length: 200) %>
-      </div>
+        <%= link_to item_path(item), style: "text-decoration: none; color: inherit; display: block; width: 100%; height: 100%;" do %>
+          <%= truncate(item.detail.to_s, length: 200) %>
+        <% end %>
+        </div>
     </div>
   </div>
 </div>

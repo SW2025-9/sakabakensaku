@@ -1,15 +1,4 @@
-<% @items.each do |f| %>
-  <p>
-      name: <%= f.name %>, 
-      liter: <%=f.liter %>
-      price: <%=f.price %>
-      category: <%=f.category %>
-      detail: <%=f.detail %>
-      <%= link_to '表示', item_path(f) %>
-      <%= link_to '編集', edit_item_path(f) %>
-      <%= link_to '削除', item_path(f), data: {turbo_method: :delete} %>
-  </p>
-<% end %>
+
 <p><%= link_to '新規追加', new_item_path %></p>
 
 <div style="width:920px; margin: 18px auto; font-family: sans-serif;">
@@ -28,6 +17,11 @@
     <% @items.each do |item| %>
       <%= render partial: 'item', locals: { item: item } %>
     <% end %>
+  </div>
+  
+  <div style="margin-top: 10px;">
+    <%# shops_path が店舗一覧ページへのURLです %>
+    <%= link_to '店舗一覧に戻る', shops_path, style: "text-decoration: none; color: #333; font-weight: bold; border: 1px solid #ccc; padding: 5px 10px; background: #f9f9f9; border-radius: 4px;" %>
   </div>
 
 </div>

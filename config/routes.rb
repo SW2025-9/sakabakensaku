@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   root 'shops#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :items, only: [:index, :show, :new, :create, :destroy, :edit, :update] do
+    resource :likes, only: [:create, :destroy], controller: 'item_likes'
     resources :reviews, only: [:create]
   end
   resources :shops do
