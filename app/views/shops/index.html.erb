@@ -4,21 +4,60 @@
   <div class="search-area">
     <%= form_with(url: root_path, method: :get, local: true, class: "search-form") do |f| %>
       
-      <%# ① セレクトボックス：何を検索するか選ぶ %>
+      <%# --- ① セレクトボックス --- %>
       <%= f.select :search_type, 
                    [['店舗名検索', 'name'], ['エリア検索', 'area']], 
                    { selected: params[:search_type] }, 
-                   class: "search-select" %>
+                   { 
+                     class: "search-select",
+                     id: "search-type-select",
+                     # 住所データ（addressではなくcityを使用）
+                     data: { user_area: session[:user_id] ? current_user&.city : "" } 
+                   } %>
 
-      <%# ② テキストボックス：キーワードを入力 %>
+      <%# --- ② テキストボックス --- %>
       <%= f.text_field :keyword, 
                        value: params[:keyword], 
                        placeholder: "キーワードを入力...", 
-                       class: "search-input" %>
+                       class: "search-input",
+                       id: "search-keyword-input" %>
 
       <%= f.submit "検索", class: "search-btn" %>
     <% end %>
   </div>
+
+  <%# --- ③ JavaScript --- %>
+  <script>
+    document.addEventListener("turbo:load", function() {
+      // 要素を取得
+      const searchSelect = document.getElementById("search-type-select");
+      const searchInput = document.getElementById("search-keyword-input");
+
+      // 要素が見つからない場合は処理をしない（エラー防止）
+      if (!searchSelect || !searchInput) return;
+
+      // セレクトボックスが変更された時の処理
+      searchSelect.addEventListener("change", function() {
+        
+        // データ属性からユーザーの住所を取得
+        const userAddress = this.getAttribute("data-user-area");
+
+        if (this.value === "area") {
+          // 「エリア検索」が選ばれた時
+          if (userAddress) {
+            searchInput.value = userAddress; // 住所を自動入力
+          } else {
+            // ログインしていない、または住所未登録の場合
+            searchInput.placeholder = "エリアを入力してください";
+          }
+        } else {
+          // 「店舗名検索」に戻った時
+          searchInput.value = "";
+          searchInput.placeholder = "キーワードを入力...";
+        }
+      });
+    });
+  </script>
 
   <%# --- 一覧表示エリア --- %>
   <div class="shop-list">
@@ -38,9 +77,9 @@
           <%# 右側：情報 %>
           <div class="shop-info">
             <div class="shop-name-box">
-            <%# items_path（商品一覧）へ、shop_id（どの店のボタンか）を持って移動する %>
-            <%= link_to shop.name, items_path(shop_id: shop.id), class: "shop-name-link" %>
-          </div>
+              <%# items_path（商品一覧）へ、shop_id（どの店のボタンか）を持って移動する %>
+              <%= link_to shop.name, items_path(shop_id: shop.id), class: "shop-name-link" %>
+            </div>
             
             <% if session[:user_id] %>
               <div class="shop-edit-area">
@@ -48,7 +87,6 @@
                 <%= link_to '編集する', edit_shop_path(shop), class: "edit-btn" %>
                 
                 <%# 削除ボタン %>
-                <%# classに "edit-btn" を入れてデザインを引き継ぎつつ、 "is-delete" で色を変える準備をします %>
                 <%= link_to '削除する', shop_path(shop), 
                     data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
                     class: "edit-btn is-delete" %>
@@ -98,4 +136,5 @@
       <%= link_to '新規追加', new_shop_path, class: "new-shop-link" %>
     </div>
   <% end %>
+
 </div>
