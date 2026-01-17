@@ -45,7 +45,19 @@
 <div class="form-container">
   <h2>新規登録</h2>
 
-  <%= form_with model: @users, class: "custom-form" do |f| %>
+  <%# model: @users を @user に変更 %>
+  <%= form_with model: @user, class: "custom-form" do |f| %>
+  
+    <% if @user.errors.any? %>
+      <div class="error-messages" style="color: red; background: #ffebeb; padding: 10px; border: 1px solid #ffcccc; border-radius: 4px; margin-bottom: 20px;">
+        <h3 style="font-size: 1rem; margin-top: 0;"><%= @user.errors.count %>件のエラーがあります:</h3>
+        <ul style="margin-bottom: 0;">
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
     <div class="form-group">
       <%= f.label :uid, 'ユーザ名', class: "form-label" %>
