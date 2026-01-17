@@ -48,7 +48,8 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     @item.save
-    redirect_to items_path
+    # 修正: 登録した商品の shop_id を指定してリダイレクト
+    redirect_to items_path(shop_id: @item.shop_id)
   end
   
   def edit
@@ -61,7 +62,8 @@ class ItemsController < ApplicationController
     @item.destroy
     
     respond_to do |format|
-      format.html { redirect_to items_path, notice: "商品を削除しました" }
+      # 修正: 削除された商品の shop_id を指定してリダイレクト
+      format.html { redirect_to items_path(shop_id: @item.shop_id), notice: "商品を削除しました" }
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@item) }
     end
   end
@@ -69,7 +71,8 @@ class ItemsController < ApplicationController
   def update
     @item = Item.find(params[:id])
     @item.update(item_params)
-    redirect_to items_path, notice: "商品を更新しました"
+    # 修正: 更新した商品の shop_id を指定してリダイレクト
+    redirect_to items_path(shop_id: @item.shop_id), notice: "商品を更新しました"
   end
   
   private
