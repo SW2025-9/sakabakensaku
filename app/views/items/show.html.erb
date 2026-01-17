@@ -22,15 +22,12 @@
               いいね解除 ❤️　<%= @item.likes.count %>
             </button>
           <% end %>
-    
         <% else %>
-          
           <%= link_to item_likes_path(@item), data: { turbo_method: :post }, style: "text-decoration: none;" do %>
             <button style="border:1px solid #bbb; padding:8px 10px; background:#fff; cursor:pointer;">
               いいね 👍　<%= @item.likes.count %>
             </button>
           <% end %>
-    
         <% end %>
       <% else %>
         
@@ -42,7 +39,7 @@
     </div>
     
     <div style="margin-top: 10px;">
-      <%= link_to "一覧に戻る", items_path, class: "back-link" %>
+      <%= link_to "一覧に戻る", items_path(shop_id: @item.shop_id), class: "back-link" %>
     </div>
   </div>
 

@@ -171,3 +171,24 @@
 .review-header { display: flex; gap: 15px; font-size: 0.9rem; color: #666; margin-bottom: 10px; }
 .review-score { color: #f5a623; font-weight: bold; } /* 星の色 */
 .review-body { font-size: 1rem; line-height: 1.6; }
+
+/* --- ボタンを横並びにするレイアウト --- */
+.shop-edit-area {
+  display: flex;       /* 横並びにする */
+  gap: 10px;           /* ボタン同士の間隔 */
+  margin-top: 10px;    /* 上の要素との間隔（必要に応じて調整） */
+}
+
+/* --- 削除ボタン専用の色設定（任意） --- */
+/* edit-btnのデザインを引き継いだ上で、背景色だけ上書きします */
+.edit-btn.is-delete {
+  background-color: #d9534f; /* 赤色（BootstrapのDanger色に近い色） */
+  color: #fff;               /* 文字色 */
+  border: none;              /* 枠線なし（元のデザインによる） */
+}
+
+/* ホバー時の色（少し濃くする） */
+.edit-btn.is-delete:hover {
+  background-color: #c9302c;
+  opacity: 0.9;
+}

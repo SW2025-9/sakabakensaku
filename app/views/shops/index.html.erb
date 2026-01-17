@@ -44,7 +44,14 @@
             
             <% if session[:user_id] %>
               <div class="shop-edit-area">
+                <%# 編集ボタン %>
                 <%= link_to '編集する', edit_shop_path(shop), class: "edit-btn" %>
+                
+                <%# 削除ボタン %>
+                <%# classに "edit-btn" を入れてデザインを引き継ぎつつ、 "is-delete" で色を変える準備をします %>
+                <%= link_to '削除する', shop_path(shop), 
+                    data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
+                    class: "edit-btn is-delete" %>
               </div>
             <% end %>
             
@@ -54,7 +61,7 @@
                 <% if shop.likes.exists?(user_id: session[:user_id]) %>
                   <%# 解除ボタン %>
                   <%= button_to shop_likes_path(shop), method: :delete, class: "like-btn liked" do %>
-                    解除 <span class="thumbs-up">👍</span>
+                    いいね解除 <span class="thumbs-up">👍</span>
                     <span class="like-count"><%= shop.likes.count %></span>
                   <% end %>
                 <% else %>

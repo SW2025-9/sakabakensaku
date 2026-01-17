@@ -1,5 +1,5 @@
-<div style="display:flex; gap:18px; align-items:flex-start;">
-  <!-- 左: サムネ（固定比率の箱） -->
+<div style="display:flex; gap:18px; align-items:flex-start; margin-bottom: 20px;">
+  <%# --- 左: サムネ（固定比率の箱） --- %>
   <div style="width:360px; height:160px; background:#eee; display:flex; align-items:center; justify-content:center; border:1px solid #ddd;">
     <% if item.image.attached? %>
       <%= image_tag item.image.variant(resize_to_limit: [350, 150]) %>
@@ -8,40 +8,72 @@
     <% end %>
   </div>
 
-  <!-- 右: 酒屋名・いいねボタン -->
+  <%# --- 右: 情報エリア --- %>
   <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <strong style="background:#fff; border:1px solid #bbb; padding:6px 10px; border-radius:3px;"><%= item.shop&.name || "酒屋の名前" %></strong>
+    
+    <%# ① 【追加】商品名を表示 %>
+    <div>
+      <h3 style="margin: 0; font-size: 1.2rem; font-weight: bold;"><%= item.name %></h3>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
+      <%# 酒屋名 %>
+      <strong style="background:#fff; border:1px solid #bbb; padding:6px 10px; border-radius:3px; font-size: 0.9rem;">
+        <%= item.shop&.name || "酒屋の名前" %>
+      </strong>
+
+      <%# いいねボタンエリア %>
       <div style="display: inline-block;">
         <% if current_user %>
           <% if current_user.already_liked?(item) %>
             <%= link_to item_likes_path(item), data: { turbo_method: :delete }, style: "text-decoration: none;" do %>
-              <button style="border:1px solid #bbb; padding:8px 10px; background:#ffebeb; cursor:pointer;">
+              <button style="border:1px solid #bbb; padding:6px 10px; background:#ffebeb; cursor:pointer;">
                 いいね解除 ❤️ <%= item.likes.reload.count %>
               </button>
             <% end %>
           <% else %>
             <%= link_to item_likes_path(item), data: { turbo_method: :post }, style: "text-decoration: none;" do %>
-              <button style="border:1px solid #bbb; padding:8px 10px; background:#fff; cursor:pointer;">
+              <button style="border:1px solid #bbb; padding:6px 10px; background:#fff; cursor:pointer;">
                 いいね 👍 <%= item.likes.reload.count %>
               </button>
             <% end %>
           <% end %>
         <% else %>
-          <button style="border:1px solid #bbb; padding:8px 10px; background:#eee; color:#999;" disabled>
+          <button style="border:1px solid #bbb; padding:6px 10px; background:#eee; color:#999;" disabled>
             いいね 👍 <%= item.likes.reload.count %>
           </button>
         <% end %>
       </div>
+
+      <%# ② 【追加】編集・削除ボタン（ログイン時のみ） %>
+      <% if current_user %>
+        <%# デザインは前のCSS(class="edit-btn")があればそれを適用しつつ、インラインスタイルで微調整しています %>
+        <div style="display:flex; gap:5px;">
+           <%= link_to '編集', edit_item_path(item), class: "edit-btn", style: "text-decoration:none; padding:6px 10px; border:1px solid #ccc; background:#f9f9f9; color:#333; border-radius:3px;" %>
+           
+           <%= link_to '削除', item_path(item), 
+               data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
+               class: "edit-btn is-delete", 
+               style: "text-decoration:none; padding:6px 10px; border:1px solid #d9534f; background:#d9534f; color:#fff; border-radius:3px;" %>
+        </div>
+      <% end %>
     </div>
 
-    <!-- レビュー風の幅広表示 -->
+    <%# 詳細テキスト（既存のもの） %>
     <div style="width:100%; border:1px solid #ddd; padding:12px; box-sizing:border-box; background:#fff;">
       <div style="color:#555; min-height:36px;">
-        <%= link_to item_path(item), style: "text-decoration: none; color: inherit; display: block; width: 100%; height: 100%;" do %>
           <%= truncate(item.detail.to_s, length: 200) %>
-        <% end %>
-        </div>
+      </div>
     </div>
+
+    <%# ③ 【追加】レビューボタン（詳細ページへ） %>
+    <div>
+      <%= link_to item_path(item), style: "text-decoration: none;" do %>
+        <button style="width: 100%; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-weight: bold; color: #333;">
+          レビューを見る・詳細へ
+        </button>
+      <% end %>
+    </div>
+
   </div>
 </div>

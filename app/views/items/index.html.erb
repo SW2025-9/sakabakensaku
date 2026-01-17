@@ -1,7 +1,12 @@
+<div class="top-container">
 
-<p><%= link_to '新規追加', new_item_path %></p>
+  <%# --- 新規追加ボタン --- %>
+  <div class="bottom-action" style="margin-bottom: 20px; justify-content: flex-start;">
+    <%= link_to '新規追加', new_item_path, class: "new-shop-link" %>
+  </div>
 
-<div class="search-area" style="margin-bottom: 18px;">
+  <%# --- 検索エリア --- %>
+  <div class="search-area" style="margin-bottom: 18px;">
     <%= form_with url: items_path, method: :get, local: true, class: "search-form" do |f| %>
       
       <%# 店舗IDの維持 %>
@@ -9,7 +14,7 @@
         <%= f.hidden_field :shop_id, value: params[:shop_id] %>
       <% end %>
 
-      <%# ① セレクトボックスを先に配置 %>
+      <%# ① セレクトボックス %>
       <%= f.select :target, 
                    [
                      ['名前', 'name'], 
@@ -20,7 +25,7 @@
                    { selected: params[:target] || 'name' }, 
                    class: "search-select" %>
 
-      <%# ② テキストボックスを後に配置 %>
+      <%# ② テキストボックス %>
       <%= f.text_field :keyword, 
                        value: params[:keyword], 
                        placeholder: "検索キーワード...", 
@@ -32,17 +37,16 @@
     <% end %>
   </div>
 
-  <!-- 一覧 -->
-  <div style="display:flex; flex-direction:column; gap:28px;">
+  <%# --- 店舗一覧に戻るボタン（ここへ移動・左寄せ） --- %>
+  <div style="margin-bottom: 20px; text-align: left;">
+    <%= link_to '店舗一覧に戻る', shops_path, class: "back-link", style: "display: inline-block; padding: 8px 16px; background: #f9f9f9; border: 1px solid #ccc; border-radius: 4px; text-decoration: none; color: #333; font-weight: bold; font-size: 0.9rem;" %>
+  </div>
+
+  <%# --- 商品一覧表示エリア --- %>
+  <div class="shop-list" style="display:flex; flex-direction:column; gap:28px;">
     <% @items.each do |item| %>
       <%= render partial: 'item', locals: { item: item } %>
     <% end %>
   </div>
-  
-  <div style="margin-top: 10px;">
-    <%# shops_path が店舗一覧ページへのURLです %>
-    <%= link_to '店舗一覧に戻る', shops_path, style: "text-decoration: none; color: #333; font-weight: bold; border: 1px solid #ccc; padding: 5px 10px; background: #f9f9f9; border-radius: 4px;" %>
-  </div>
 
 </div>
-
