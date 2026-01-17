@@ -13,14 +13,24 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-# --- 重要: 本番環境 (Render) の設定 ---
+# --- 修正版: 本番環境 (Render) の設定 ---
 production:
-  # ここで adapter を postgresql に上書きするのが必須です
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  database: sakabakensaku_production
-  username: sakabakensaku
-  password: <%= ENV['SAKABAKENSAKU_DATABASE_PASSWORD'] %>
-  # Renderでは以下の環境変数が自動で設定されるため、これを読み込ませます
-  url: <%= ENV['DATABASE_URL'] %>
+  primary: &primary_production
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    url: <%= ENV['DATABASE_URL'] %>
+
+  # 以下3つを追加：これらも同じDB(primary)を使うように設定
+  cache:
+    <<: *primary_production
+    database: sakabakensaku_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: sakabakensaku_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: sakabakensaku_production_cable
+    migrations_paths: db/cable_migrate
