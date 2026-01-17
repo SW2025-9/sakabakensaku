@@ -8,7 +8,7 @@
     
     <% if @item.image.attached? %>
       <div class="shop-main-image">
-        <%= image_tag @item.image %>
+        <%= image_tag @item.image, width: 300 %>
       </div>
     <% end %>
     
